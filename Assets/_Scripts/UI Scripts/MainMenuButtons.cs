@@ -19,6 +19,7 @@ public class MainMenuButtons : MonoBehaviour
     }
     public void OnBackButtonPressed()
     {
+        Debug.Log("Main Menu Button");
         SceneManager.LoadScene("Main Menu");
     }
 }
