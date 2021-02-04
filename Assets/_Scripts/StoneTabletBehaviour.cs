@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StoneTabletBehaviour : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public bool playerInRange = false;
     void Start()
     {
         
@@ -14,5 +14,19 @@ public class StoneTabletBehaviour : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+            GameObject.FindWithTag("GameManager").GetComponent<GameManager>().StoneTabletHUD.SetActive(true);
+        //Activate A Message on canvas through gamemanager
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+            GameObject.FindWithTag("GameManager").GetComponent<GameManager>().StoneTabletHUD.SetActive(false);
+        //Deactivate A Message on canvas through gamemanager
     }
 }

@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     //Player HUD Canvas 
     public GameObject HUDCanvas;
-    
+    public GameObject StoneTabletHUD;
     //Totem Combo
     public int totemCombo;
     private int currentTotemCombo = 0;
@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         DontDestroyOnLoad(this);
+        GameObject.FindWithTag("GameManager").GetComponent<GameManager>().StoneTabletHUD.SetActive(false);
     }
 
     // Update is called once per frame
