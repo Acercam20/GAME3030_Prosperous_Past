@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
         if (isDescending)
         {
             if (centrePlatform != null)
-                centrePlatform.transform.position = new Vector3(centrePlatform.transform.position.x, centrePlatform.transform.position.y - 0.002f, centrePlatform.transform.position.z);
+                centrePlatform.transform.position = new Vector3(centrePlatform.transform.position.x, centrePlatform.transform.position.y - 0.01f, centrePlatform.transform.position.z);
         }
     }
 

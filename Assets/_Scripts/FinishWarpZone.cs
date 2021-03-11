@@ -21,6 +21,7 @@ public class FinishWarpZone : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
+            Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
             SceneManager.LoadScene("VictoryMenu");
         }
