@@ -22,4 +22,14 @@ public class MainMenuButtons : MonoBehaviour
         Debug.Log("Main Menu Button");
         SceneManager.LoadScene("Main Menu");
     }
+    public void OnResumeButtonPressed()
+    {
+        GameObject.FindWithTag("Player").GetComponent<PlayerController>().Unpause();
+    }
+    public void OnMainMenuPausePressed()
+    {
+        Time.timeScale = 1;
+        GameObject.FindWithTag("GameManager").GetComponent<GameManager>().pauseCanvas.SetActive(false);
+        SceneManager.LoadScene("Main Menu");
+    }
 }

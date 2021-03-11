@@ -8,10 +8,14 @@ public class GameManager : MonoBehaviour
     //Player HUD Canvas 
     public GameObject HUDCanvas;
     public GameObject StoneTabletHUD;
+    public GameObject pauseCanvas;
     //Totem Combo
     public int totemCombo;
     private int currentTotemCombo = 0;
-
+    //Centre Platform
+    public GameObject centrePlatform;
+    public bool isDescending;
+    private bool glyphUnlocked1, glyphUnlocked2, glyphUnlocked3, glyphUnlocked4;
     //Cardinal Totems
     public GameObject nTotem;
     public GameObject eTotem;
@@ -29,6 +33,17 @@ public class GameManager : MonoBehaviour
     //public GameObject EasternPressurePlate;
     //public GameObject WesternPressurePlate;
 
+    //Tetra Game
+    public GameObject TetraUI;
+    public List<GameObject> tetraButtonBools;
+    public List<GameObject> tetraManaLines;
+
+    //Pushable Objects
+    public Vector3 rockRespawnLocation = new Vector3(-7, 7, 34);
+
+    //Player
+    public Vector3 playerRespawnLocation = new Vector3(-80, 0, -5);
+
     //HUD
     public Text interactionText;
 
@@ -38,14 +53,25 @@ public class GameManager : MonoBehaviour
     private bool pressurePlate1Active, pressurePlate2Active;
     void Start()
     {
+        DontDestroyOnLoad(pauseCanvas);
         DontDestroyOnLoad(this);
+        DontDestroyOnLoad(HUDCanvas);
         GameObject.FindWithTag("GameManager").GetComponent<GameManager>().StoneTabletHUD.SetActive(false);
+        TetraUI.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (glyphUnlocked1 && glyphUnlocked2 && glyphUnlocked3 && glyphUnlocked4)
+        {
+            isDescending = true;
+        }
+        if (isDescending)
+        {
+            if (centrePlatform != null)
+                centrePlatform.transform.position = new Vector3(centrePlatform.transform.position.x, centrePlatform.transform.position.y - 0.002f, centrePlatform.transform.position.z);
+        }
     }
 
     public void ActivateTotem(int totemNumber)
@@ -68,8 +94,8 @@ public class GameManager : MonoBehaviour
 
             if (currentTotemCombo == totemCombo)
             {
-                GlyphLock1.GetComponent<MeshRenderer>().material = activatedTotemMat;
-                Debug.Log("Totem Challenge Complete!");
+                GlyphLock4.GetComponent<MeshRenderer>().material = activatedTotemMat;
+                glyphUnlocked4 = true;
             }
             else
             {
@@ -119,6 +145,34 @@ public class GameManager : MonoBehaviour
             GlyphLock3.GetComponent<MeshRenderer>().material = activatedTotemMat;
             pressurePlateChallengeComplete = true;
             pressurePlateCentralManaLine.GetComponent<MeshRenderer>().material = activatedTotemMat;
+            glyphUnlocked3 = true;
         }
+    }
+
+    public void TetraBoolChecks()
+    {
+        bool isComplete = true;
+        for (int i = 0; i < 5; i++)
+        {
+            if (!tetraButtonBools[i].GetComponent<TetraButtonsBehaviour>().isActive)
+            {
+                isComplete = false;
+            }
+        }
+        if (isComplete)
+        {
+            GlyphLock1.GetComponent<MeshRenderer>().material = activatedTotemMat;
+            for (int i = 0; i < tetraManaLines.Count; i++)
+            {
+                tetraManaLines[i].GetComponent<MeshRenderer>().material = activatedTotemMat;
+            }
+            glyphUnlocked1 = true;
+        }
+    }
+
+    public void FinishObjectiveFour(bool finished)
+    {
+        GlyphLock2.GetComponent<MeshRenderer>().material = activatedTotemMat;
+        glyphUnlocked2 = true;
     }
 }

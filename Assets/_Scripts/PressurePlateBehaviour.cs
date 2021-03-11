@@ -10,7 +10,7 @@ public class PressurePlateBehaviour : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Interactable")
+        if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "PushableObject")
         {
             isActive = true;
 
@@ -25,7 +25,7 @@ public class PressurePlateBehaviour : MonoBehaviour
     }
     private void OnTriggerExit(Collider collision)
     {
-        if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Interactable")
+        if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "PushableObject")
         {
             if (!GameObject.FindWithTag("GameManager").GetComponent<GameManager>().pressurePlateChallengeComplete)
             {

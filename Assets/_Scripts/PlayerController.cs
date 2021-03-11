@@ -11,8 +11,14 @@ public class PlayerController : MonoBehaviour
     public Camera playerCamera;
     public float lookSpeed = 2.0f;
     public float lookXLimit = 45.0f;
+    bool isPaused = false;
 
     private GameObject closestTotem;
+    private GameObject pushableRock;
+    private GameObject closestInteractive;
+    private bool isPushing = false;
+    public bool isMoveable = true;
+    public bool cameraLock = false;
 
     CharacterController characterController;
     Vector3 moveDirection = Vector3.zero;
@@ -28,6 +34,8 @@ public class PlayerController : MonoBehaviour
         // Lock cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        GameObject.FindWithTag("GameManager").GetComponent<GameManager>().pauseCanvas.SetActive(false);
     }
 
     void Update()
@@ -35,14 +43,66 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (closestTotem != null)
+            if (pushableRock != null)
+            {
+                //pushableRock.transform.SetParent(transform);
+                pushableRock.GetComponent<BoxCollider>().isTrigger = true;
+                isPushing = true;
+            }
+            else if (closestTotem != null)
             {
                 closestTotem.GetComponent<TotemBehaviour>().Activate();
             }
-            //Grab Cube Mechanic
+            else if (closestInteractive != null)
+            {
+                closestInteractive.GetComponent<BlockedButtonBehaviour>().Activate(true);
+            }
         }
 
-        MovementInputs();
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (isPaused)
+            {
+                Unpause();
+            }
+            else
+            {
+                Cursor.visible = true;
+                cameraLock = true;
+                Cursor.lockState = CursorLockMode.None;
+                Time.timeScale = 0;
+                GameObject.FindWithTag("GameManager").GetComponent<GameManager>().pauseCanvas.SetActive(true);
+            }
+        }
+
+        if (Input.GetKeyUp(KeyCode.E))
+        {
+            if (pushableRock != null)
+            {
+                pushableRock.GetComponent<BoxCollider>().isTrigger = false;
+                pushableRock.transform.parent = null;
+                pushableRock = null;
+                isPushing = false;
+            }
+        }
+
+        if (isMoveable)
+            MovementInputs();
+
+        if (isPushing)
+        {
+            pushableRock.transform.position = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
+        }
+    }
+    public void Unpause()
+    {
+        cameraLock = false;
+        Cursor.visible = false;
+        Time.timeScale = 1;
+        GameObject.FindWithTag("GameManager").GetComponent<GameManager>().pauseCanvas.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
+       
+        
     }
 
     void MovementInputs()
@@ -78,7 +138,7 @@ public class PlayerController : MonoBehaviour
         characterController.Move(moveDirection * Time.deltaTime);
 
         // Player and Camera rotation
-        if (canMove)
+        if (canMove && !cameraLock)
         {
             rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
             rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
@@ -94,6 +154,10 @@ public class PlayerController : MonoBehaviour
             GameObject.FindWithTag("GameManager").GetComponent<GameManager>().SetInteractionText("Press (E) to activate"); //Should probably change this to switch with keybinding switch
             closestTotem = other.gameObject;
         }
+        else if (other.gameObject.tag == "Interactable")
+        {
+            closestInteractive = other.gameObject;
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -102,6 +166,34 @@ public class PlayerController : MonoBehaviour
         {
             GameObject.FindWithTag("GameManager").GetComponent<GameManager>().SetInteractionText("");
             closestTotem = null;
+        }
+        else if (other.gameObject.tag == "Interactable")
+        {
+            closestInteractive = null;
+        }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "PushableObject")
+        {
+            pushableRock = other.gameObject;
+        }
+    }
+
+    private void OnCollisionExit(Collision other)
+    {
+        if (other.gameObject.tag == "PushableObject" && !isPushing)
+        {
+            if (pushableRock != null)
+            {
+                pushableRock.GetComponent<BoxCollider>().isTrigger = false;
+                pushableRock = null;
+            }
+        }
+        else if (other.gameObject.tag == "PushableObject" && isPushing)
+        {
+            pushableRock.transform.position = gameObject.transform.position;
         }
     }
 }

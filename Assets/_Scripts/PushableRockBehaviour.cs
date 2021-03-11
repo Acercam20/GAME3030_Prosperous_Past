@@ -15,22 +15,27 @@ public class PushableRockBehaviour : MonoBehaviour
 
     void Update()
     {
+        /*
         if (isBeingPushed)
         {
             MoveRock();
         }
-        UpdateHitbox();
+        UpdateHitbox();*/
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.tag == "Player")
         {
-            isBeingPushed = true;
+            //MoveRock(other.gameObject);
+        }
+        else if (other.gameObject.tag == "Kill Zone")
+        {
+            //Respawn
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnCollisionExit(Collision other)
     {
         if (other.gameObject.tag == "Player")
         {
@@ -38,8 +43,10 @@ public class PushableRockBehaviour : MonoBehaviour
         }
     }
 
-    private void MoveRock()
+    public void MoveRock(GameObject pushingObject)
     {
+        
+        /*
         if (sideNumber == 1)
         {
             transform.parent.position = new Vector3(transform.parent.position.x, transform.parent.position.y, transform.parent.position.z + (Time.deltaTime * pushSpeed)); //Time.deltaTime
@@ -63,9 +70,9 @@ public class PushableRockBehaviour : MonoBehaviour
         else
         {
             Debug.Log("No side number assigned");
-        }
+        }*/
     }
-
+    /*
     void UpdateHitbox()
     {
         if (sideNumber == 1)
@@ -84,5 +91,5 @@ public class PushableRockBehaviour : MonoBehaviour
         {
             gameObject.transform.position = new Vector3(mesh.transform.position.x - 1, mesh.transform.position.y, mesh.transform.position.z);
         }
-    }
+    }*/
 }

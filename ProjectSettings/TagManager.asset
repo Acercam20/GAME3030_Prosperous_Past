@@ -7,6 +7,9 @@ TagManager:
   - GameManager
   - Interactable
   - Totem
+  - Kill Zone
+  - PushableObject
+  - StoneTabletHUD
   layers:
   - Default
   - TransparentFX
@@ -14,8 +17,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - PushableRock
+  - Player
   - 
   - 
   - 

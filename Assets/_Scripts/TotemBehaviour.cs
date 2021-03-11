@@ -18,7 +18,6 @@ public class TotemBehaviour : MonoBehaviour
         if (!Activated)
         {
             gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = GameObject.FindWithTag("GameManager").GetComponent<GameManager>().activatedTotemMat;
-            Debug.Log("Totem Activated!");
             Activated = true;
             GameObject.FindWithTag("GameManager").GetComponent<GameManager>().ActivateTotem(ID);
         }
