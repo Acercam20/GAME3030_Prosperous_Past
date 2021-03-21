@@ -5,11 +5,17 @@ using UnityEngine;
 public class TotemBehaviour : MonoBehaviour
 {
     public bool Activated;
+    public GameObject totemObject;
     public int ID;
+
+    private void Start()
+    {
+        totemObject.GetComponent<ParticleSystem>().Stop();
+    }
 
     public void Deactivate()
     {
-        gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = GameObject.FindWithTag("GameManager").GetComponent<GameManager>().deactivatedTotemMat;
+        totemObject.GetComponent<ParticleSystem>().Stop();
         Activated = false;
     }
 
@@ -17,7 +23,7 @@ public class TotemBehaviour : MonoBehaviour
     {
         if (!Activated)
         {
-            gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = GameObject.FindWithTag("GameManager").GetComponent<GameManager>().activatedTotemMat;
+            totemObject.GetComponent<ParticleSystem>().Play();
             Activated = true;
             GameObject.FindWithTag("GameManager").GetComponent<GameManager>().ActivateTotem(ID);
         }
