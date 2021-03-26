@@ -21,6 +21,7 @@ public class FinishWarpZone : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
+            GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().PlaySound(GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().endGameVictory);
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
             SceneManager.LoadScene("VictoryMenu");

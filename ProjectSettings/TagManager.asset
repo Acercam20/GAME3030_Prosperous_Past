@@ -12,6 +12,8 @@ TagManager:
   - StoneTabletHUD
   - Fire
   - SoundManager
+  - GrassFloor
+  - StoneFloor
   layers:
   - Default
   - TransparentFX

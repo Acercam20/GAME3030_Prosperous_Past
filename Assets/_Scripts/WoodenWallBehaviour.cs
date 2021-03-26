@@ -31,6 +31,7 @@ public class WoodenWallBehaviour : MonoBehaviour
         gameObject.GetComponent<MeshRenderer>().material.color = new Color(gameObject.GetComponent<MeshRenderer>().material.color.r, gameObject.GetComponent<MeshRenderer>().material.color.g, gameObject.GetComponent<MeshRenderer>().material.color.b, 0.25f);
         if (health == 0)
         {
+            GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().PlaySound(GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().woodenWallCollapse);
             Destroy(gameObject);
         }
     }

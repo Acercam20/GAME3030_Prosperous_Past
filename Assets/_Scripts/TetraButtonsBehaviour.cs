@@ -21,6 +21,7 @@ public class TetraButtonsBehaviour : MonoBehaviour
 
     public void Activate()
     {
+        GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().PlaySound(GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().tetraButtonPress);
         Flip();
         rightButton.GetComponent<TetraButtonsBehaviour>().Flip();
         leftButton.GetComponent<TetraButtonsBehaviour>().Flip();

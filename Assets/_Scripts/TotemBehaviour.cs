@@ -23,9 +23,15 @@ public class TotemBehaviour : MonoBehaviour
     {
         if (!Activated)
         {
+            GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().PlaySound(GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().activateTotem);
             totemObject.GetComponent<ParticleSystem>().Play();
             Activated = true;
             GameObject.FindWithTag("GameManager").GetComponent<GameManager>().ActivateTotem(ID);
+        }
+        else
+        {
+            GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().PlaySound(GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().deactivateTotem);
+            GameObject.FindWithTag("GameManager").GetComponent<GameManager>().DeactivateTotem();
         }
     }
 }

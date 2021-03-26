@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     private int currentTotemCombo = 0;
     //Centre Platform
     public GameObject centrePlatform;
-    public bool isDescending;
+    public bool isDescending, descendingStatement = true;
     private bool glyphUnlocked1, glyphUnlocked2, glyphUnlocked3, glyphUnlocked4;
     //Cardinal Totems
     public GameObject nTotem;
@@ -63,9 +63,11 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (glyphUnlocked1 && glyphUnlocked2 && glyphUnlocked3 && glyphUnlocked4)
+        if (glyphUnlocked1 && glyphUnlocked2 && glyphUnlocked3 && glyphUnlocked4 && descendingStatement)
         {
             isDescending = true;
+            descendingStatement = false;
+            GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().PlaySound(GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().platformLowering);
         }
         if (isDescending)
         {
@@ -96,6 +98,7 @@ public class GameManager : MonoBehaviour
             {
                 GlyphLock4.GetComponent<MeshRenderer>().material = activatedTotemMat;
                 glyphUnlocked4 = true;
+                GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().PlaySound(GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().puzzleComplete);
             }
             else
             {
@@ -108,6 +111,7 @@ public class GameManager : MonoBehaviour
 
     public void DeactivateTotem()
     {
+        GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().PlaySound(GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().puzzleFailed);
         currentTotemCombo = 0;
         nTotem.GetComponent<TotemBehaviour>().Deactivate();
         eTotem.GetComponent<TotemBehaviour>().Deactivate();
@@ -143,6 +147,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Challenge Complete!");
             GlyphLock3.GetComponent<MeshRenderer>().material = activatedTotemMat;
+            GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().PlaySound(GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().puzzleComplete);
             pressurePlateChallengeComplete = true;
             pressurePlateCentralManaLine.GetComponent<MeshRenderer>().material = activatedTotemMat;
             glyphUnlocked3 = true;
@@ -166,12 +171,14 @@ public class GameManager : MonoBehaviour
             {
                 tetraManaLines[i].GetComponent<MeshRenderer>().material = activatedTotemMat;
             }
+            GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().PlaySound(GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().puzzleComplete);
             glyphUnlocked1 = true;
         }
     }
 
     public void FinishObjectiveFour(bool finished)
     {
+        GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().PlaySound(GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().puzzleComplete);
         GlyphLock2.GetComponent<MeshRenderer>().material = activatedTotemMat;
         glyphUnlocked2 = true;
     }

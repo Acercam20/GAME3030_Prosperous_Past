@@ -44,6 +44,7 @@ public class DoorBehaviour : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             isOpening = true;
+            GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().PlaySound(GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().doorOpening);
         }
     }
 
