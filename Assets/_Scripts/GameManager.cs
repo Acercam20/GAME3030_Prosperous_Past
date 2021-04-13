@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour
     public Material activatedTotemMat;
 
     public GameObject GlyphLock1, GlyphLock2, GlyphLock3, GlyphLock4;
+    [SerializeField]
+    private Light glyphLight1, glyphLight2, glyphLight3, glyphLight4;
 
     public GameObject pressurePlateCentralManaLine;
     public bool pressurePlateChallengeComplete = false;
@@ -37,6 +39,7 @@ public class GameManager : MonoBehaviour
     public GameObject TetraUI;
     public List<GameObject> tetraButtonBools;
     public List<GameObject> tetraManaLines;
+    public Light tetraLight;
 
     //Pushable Objects
     public Vector3 rockRespawnLocation = new Vector3(-7, 7, 34);
@@ -53,9 +56,10 @@ public class GameManager : MonoBehaviour
     private bool pressurePlate1Active, pressurePlate2Active;
     void Start()
     {
-        DontDestroyOnLoad(pauseCanvas);
-        DontDestroyOnLoad(this);
-        DontDestroyOnLoad(HUDCanvas);
+        //DontDestroyOnLoad(pauseCanvas);
+        //DontDestroyOnLoad(HUDCanvas);
+
+        //DontDestroyOnLoad(this);
         GameObject.FindWithTag("GameManager").GetComponent<GameManager>().StoneTabletHUD.SetActive(false);
         TetraUI.SetActive(false);
     }
@@ -97,6 +101,7 @@ public class GameManager : MonoBehaviour
             if (currentTotemCombo == totemCombo)
             {
                 GlyphLock4.GetComponent<MeshRenderer>().material = activatedTotemMat;
+                glyphLight4.intensity = 3;
                 glyphUnlocked4 = true;
                 GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().PlaySound(GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().puzzleComplete);
             }
@@ -147,6 +152,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Challenge Complete!");
             GlyphLock3.GetComponent<MeshRenderer>().material = activatedTotemMat;
+            glyphLight3.intensity = 3;
             GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().PlaySound(GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().puzzleComplete);
             pressurePlateChallengeComplete = true;
             pressurePlateCentralManaLine.GetComponent<MeshRenderer>().material = activatedTotemMat;
@@ -167,6 +173,8 @@ public class GameManager : MonoBehaviour
         if (isComplete)
         {
             GlyphLock1.GetComponent<MeshRenderer>().material = activatedTotemMat;
+            glyphLight1.intensity = 3;
+            tetraLight.color = Color.green;
             for (int i = 0; i < tetraManaLines.Count; i++)
             {
                 tetraManaLines[i].GetComponent<MeshRenderer>().material = activatedTotemMat;
@@ -180,6 +188,7 @@ public class GameManager : MonoBehaviour
     {
         GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().PlaySound(GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().puzzleComplete);
         GlyphLock2.GetComponent<MeshRenderer>().material = activatedTotemMat;
+        glyphLight2.intensity = 3;
         glyphUnlocked2 = true;
     }
 }

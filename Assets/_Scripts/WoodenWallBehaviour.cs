@@ -19,7 +19,12 @@ public class WoodenWallBehaviour : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "PushableObject")
+        
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "PushableObject")
         {
             ReduceHealth();
         }

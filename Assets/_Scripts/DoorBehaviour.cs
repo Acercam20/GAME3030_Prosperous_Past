@@ -8,6 +8,7 @@ public class DoorBehaviour : MonoBehaviour
     public GameObject door1;
     public GameObject door2;
     private bool isOpening = false;
+    private bool isOpen = false;
 
     void Update()
     {
@@ -27,6 +28,7 @@ public class DoorBehaviour : MonoBehaviour
             {
                 door1.GetComponent<MeshCollider>().isTrigger = true;
                 door2.GetComponent<MeshCollider>().isTrigger = true;
+                isOpen = true;
             }
             if (door1.transform.localScale.x < 2)
             {
@@ -41,7 +43,7 @@ public class DoorBehaviour : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player" && !isOpen)
         {
             isOpening = true;
             GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().PlaySound(GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>().doorOpening);

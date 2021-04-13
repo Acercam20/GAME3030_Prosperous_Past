@@ -20,6 +20,14 @@ public class PlayerController : MonoBehaviour
     public bool isMoveable = true;
     public bool cameraLock = false;
 
+    private Animator playerAnimator;
+    private Rigidbody RB;
+
+    private readonly int MovementXHash = Animator.StringToHash("MovementX");
+    private readonly int MovementZHash = Animator.StringToHash("MovementZ");
+    private readonly int IsRunningHash = Animator.StringToHash("IsRunning");
+    private readonly int IsJumpingHash = Animator.StringToHash("IsJumping");
+
     CharacterController characterController;
     Vector3 moveDirection = Vector3.zero;
     float rotationX = 0;
@@ -29,6 +37,12 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        GameObject.FindWithTag("GameManager").GetComponent<GameManager>().StoneTabletHUD.SetActive(false);
+        GameObject.FindWithTag("GameManager").GetComponent<GameManager>().pauseCanvas.SetActive(false);
+
+        playerAnimator = GetComponent<Animator>();
+        RB = GetComponent<Rigidbody>();
+
         characterController = GetComponent<CharacterController>();
 
         // Lock cursor
@@ -46,7 +60,7 @@ public class PlayerController : MonoBehaviour
             if (pushableRock != null)
             {
                 //pushableRock.transform.SetParent(transform);
-                pushableRock.GetComponent<BoxCollider>().isTrigger = true;
+                pushableRock.GetComponent<MeshCollider>().isTrigger = true;
                 isPushing = true;
             }
             else if (closestTotem != null)
@@ -79,7 +93,7 @@ public class PlayerController : MonoBehaviour
         {
             if (pushableRock != null)
             {
-                pushableRock.GetComponent<BoxCollider>().isTrigger = false;
+                pushableRock.GetComponent<MeshCollider>().isTrigger = false;
                 pushableRock.transform.parent = null;
                 pushableRock = null;
                 isPushing = false;
@@ -116,6 +130,24 @@ public class PlayerController : MonoBehaviour
         float curSpeedY = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
+
+        
+        if (isRunning)
+        {
+            playerAnimator.SetBool("isRunning", true);
+            playerAnimator.SetBool("isWalking", false);
+        }
+        else if (moveDirection == Vector3.zero)
+        {
+            playerAnimator.SetBool("isWalking", false);
+            playerAnimator.SetBool("isRunning", false);
+        }
+        else
+        {
+            playerAnimator.SetBool("isRunning", false);
+            playerAnimator.SetBool("isWalking", true);
+        }
+
 
         if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
         {
@@ -158,6 +190,12 @@ public class PlayerController : MonoBehaviour
         {
             closestInteractive = other.gameObject;
         }
+
+
+        if (other.gameObject.tag == "PushableObject")
+        {
+            pushableRock = other.transform.parent.gameObject;
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -171,23 +209,14 @@ public class PlayerController : MonoBehaviour
         {
             closestInteractive = null;
         }
-    }
 
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.tag == "PushableObject")
-        {
-            pushableRock = other.gameObject;
-        }
-    }
 
-    private void OnCollisionExit(Collision other)
-    {
+
         if (other.gameObject.tag == "PushableObject" && !isPushing)
         {
             if (pushableRock != null)
             {
-                pushableRock.GetComponent<BoxCollider>().isTrigger = false;
+                pushableRock.GetComponent<MeshCollider>().isTrigger = false;
                 pushableRock = null;
             }
         }
@@ -195,5 +224,15 @@ public class PlayerController : MonoBehaviour
         {
             pushableRock.transform.position = gameObject.transform.position;
         }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        
+    }
+
+    private void OnCollisionExit(Collision other)
+    {
+        
     }
 }
