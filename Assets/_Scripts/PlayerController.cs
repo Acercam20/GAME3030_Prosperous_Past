@@ -132,7 +132,7 @@ public class PlayerController : MonoBehaviour
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
 
         
-        if (isRunning)
+        if (isRunning && !(moveDirection == Vector3.zero))
         {
             playerAnimator.SetBool("isRunning", true);
             playerAnimator.SetBool("isWalking", false);

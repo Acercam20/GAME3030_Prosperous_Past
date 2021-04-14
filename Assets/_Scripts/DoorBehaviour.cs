@@ -17,12 +17,12 @@ public class DoorBehaviour : MonoBehaviour
             if (door1.transform.rotation.eulerAngles.y > 180)
             {
                 Vector3 rotateV1 = new Vector3(0, -1, 0);
-                door1.transform.Rotate(rotateV1, 0.5f);
+                door1.transform.Rotate(rotateV1, 0.8f);
             }
             if (door2.transform.rotation.eulerAngles.y < 359)
             {
                 Vector3 rotateV2 = new Vector3(0, 1, 0);
-                door2.transform.Rotate(rotateV2, 0.5f);
+                door2.transform.Rotate(rotateV2, 0.8f);
             }
             else
             {
