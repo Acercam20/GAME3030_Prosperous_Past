@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) || Input.GetButtonDown("Interact"))
         {
             if (pushableRock != null)
             {
@@ -73,7 +73,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.P) || Input.GetButton("Pause"))
         {
             if (isPaused)
             {
@@ -89,7 +89,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyUp(KeyCode.E))
+        if (Input.GetKeyUp(KeyCode.E) || Input.GetButtonUp("Interact"))
         {
             if (pushableRock != null)
             {
@@ -125,7 +125,7 @@ public class PlayerController : MonoBehaviour
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
         // Press Left Shift to run
-        bool isRunning = Input.GetKey(KeyCode.LeftShift);
+        bool isRunning = Input.GetButton("Run");
         float curSpeedX = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Vertical") : 0;
         float curSpeedY = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;
@@ -195,6 +195,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "PushableObject")
         {
             pushableRock = other.transform.parent.gameObject;
+            
         }
     }
 
@@ -223,6 +224,7 @@ public class PlayerController : MonoBehaviour
         else if (other.gameObject.tag == "PushableObject" && isPushing)
         {
             pushableRock.transform.position = gameObject.transform.position;
+            Debug.Log("Rock");
         }
     }
 

@@ -32,11 +32,11 @@ public class DoorBehaviour : MonoBehaviour
             }
             if (door1.transform.localScale.x < 2)
             {
-                door1.transform.localScale = new Vector3(door1.transform.localScale.x + 0.01f, 1, 1);
+                //door1.transform.localScale = new Vector3(door1.transform.localScale.x + 0.01f, 1, 1);
             }
             if (door2.transform.localScale.x > -2)
             {
-                door2.transform.localScale = new Vector3(door2.transform.localScale.x - 0.01f, 1, 1);
+                //door2.transform.localScale = new Vector3(door2.transform.localScale.x - 0.01f, 1, 1);
             }
         }
     }
